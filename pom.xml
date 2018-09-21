@@ -1,0 +1,270 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cn.tkxqc</groupId>
+  <artifactId>webflow</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>webflow Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+	
+  <properties>  
+       <!-- 设置utf-8编码，必须设置 -->  
+       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+       <!-- spring 4.0.0 -->  
+       <!-- 设置spring版本 -->  
+       <springframework.version>4.3.0.RELEASE</springframework.version>  
+       <!-- 设置jackson版本 -->
+       <jackson.version>2.5.4</jackson.version>
+		<easymock.version>3.4</easymock.version>
+		<hsqldb.version>2.4.0</hsqldb.version>
+		<hibernate.version>5.2.12.Final</hibernate.version>
+		<hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
+		<jaxb.version>2.2.3</jaxb.version>
+		<jetty-maven-plugin.version>9.4.8.v20171121</jetty-maven-plugin.version>
+		<junit.version>4.12</junit.version>
+		<log4j.version>2.10.0</log4j.version>
+		<mojarra.version>2.2.16</mojarra.version>
+		<myfaces.version>2.2.12</myfaces.version>
+		<primefaces.version>6.1</primefaces.version>
+		<servlet.version>3.1.0</servlet.version>
+		<spring-security.version>5.0.1.RELEASE</spring-security.version>
+		<tiles.version>3.0.8</tiles.version>
+		<webflow.version>2.5.0.RELEASE</webflow.version>
+	</properties>
+   
+    <build>  
+        <!-- jar包名称 -->  
+        <finalName>webflow</finalName>  
+        <plugins>  
+            <!-- 编译jdk版本设置 1.6 -->  
+            <plugin>  
+                <groupId>org.apache.maven.plugins</groupId>  
+                <artifactId>maven-compiler-plugin</artifactId>  
+                <version>2.3.2</version>  
+                <configuration>  
+                    <source>1.7</source>  
+                    <target>1.7</target>  
+                    <uriEncoding>${project.build.sourceEncoding}</uriEncoding>  
+                    <warName>springwebflow</warName><!-- 设置默认maven的war包名 -->
+                </configuration>  
+            </plugin>  
+  
+            <!-- jetty插件 -->  
+		    <!-- 在settings.xml 文件中新增 <pluginGroup>org.mortbay.jetty</pluginGroup>	
+		    <pluginGroups>
+		    <pluginGroup
+			     | Specifies a further group identifier to use for plugin lookup.
+			    <pluginGroup>com.your.plugins</pluginGroup>
+			    <pluginGroup>org.mortbay.jetty</pluginGroup>	
+		  	</pluginGroups>
+		  -->
+            <plugin>  
+                <groupId>org.mortbay.jetty</groupId>  
+                <artifactId>maven-jetty-plugin</artifactId>  
+                <version>6.1.26</version>  
+                <configuration>  
+                    <!-- 通过jetty访问项目时的项目名称 ${project.build.outputDirectory} 为war包名 -->  
+                    <webApp>  
+                        <contextPath>${project.build.outputDirectory}</contextPath>  
+                    </webApp>  
+                    <!-- jetty附属配置，未启用 -->  
+                    <!-- <webDefaultXml>src/main/resources/webdefault.xml</webDefaultXml> -->  
+                    <!-- configuration.scanIntervalSeconds 配置表示新代码的扫描时间间隔（秒），值 <= 0 表示不扫描 -->  
+                    <scanIntervalSeconds>0</scanIntervalSeconds>  
+                    <!-- 端口设置 -->  
+                    <connectors>  
+                        <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">  
+                            <port>8085</port>  
+                        </connector>  
+                    </connectors>  
+                </configuration>  
+            </plugin>  
+        </plugins>  
+    </build>  
+   
+   <dependencies>  
+ 		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>				
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.webflow</groupId>
+			<artifactId>spring-webflow</artifactId>
+			<version>${webflow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.webflow</groupId>
+			<artifactId>spring-js-resources</artifactId>
+			<version>${webflow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+			<version>${spring-security.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${spring-security.version}</version>
+        </dependency>
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- Thymeleaf -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>2.1.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring4</artifactId>
+			<version>2.1.5.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-tiles2-spring4</artifactId>
+			<version>2.1.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+			<version>2.1.2.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-conditionalcomments</artifactId>
+			<version>2.1.2.RELEASE</version>
+		</dependency>
+		<!-- Apache Tiles -->
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-core</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-api</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-template</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-servlet</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tiles</groupId>
+			<artifactId>tiles-jsp</artifactId>
+			<version>${tiles.version}</version>
+		</dependency>
+		<!-- Database, JPA -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- JSR 303 with Hibernate Validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+		<!-- JAXB -->
+        <dependency>
+          <groupId>javax.xml.bind</groupId>
+          <artifactId>jaxb-api</artifactId>
+          <version>${jaxb.version}</version>
+        </dependency>
+		<!--  Joda Time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time-jsptags</artifactId>
+			<version>1.1.1</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-slf4j-impl</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-jul</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
+		<!-- Test -->
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>${easymock.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+    </dependencies>    
+</project>
